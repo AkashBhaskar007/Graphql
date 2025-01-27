@@ -2,7 +2,7 @@ const express = require("express");
 const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
 const cors = require("cors");
-
+const axios = require("axios");
 async function startServer() {
   const app = express();
   const server = new ApolloServer({
@@ -18,7 +18,8 @@ async function startServer() {
     }`,
     resolvers: {
       Query: {
-        getTodos: () => [{ id: 1, title: "GraphQl" }],
+        getTodos: async () =>
+          (await axios.get("https://jsonplaceholder.typicode.com/todos")).data,
       },
     },
   });
